@@ -1,0 +1,58 @@
+html {
+    font-family: "Consolas";
+}
+
+body {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: auto var(--width);
+}
+
+nav#side {
+    border-right: 1px solid black;
+    /* box-shadow: 0 0 0 25px; */
+}
+
+h1 {
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    text-align: center;
+    background-color: white;
+    color: black;
+    padding: 0;
+    height: 30px;
+    outline: none;
+}
+
+main {
+    position: relative;
+}
+
+.wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(var(--colsNumber), 1fr);
+    grid-template-rows: repeat(var(--rowsNumber), 1fr);
+}
+
+.box
+{
+    box-sizing: border-box;
+    border: 1px solid black;
+    width: 100%;
+    height: 100%;
+}
+
+.box.checked
+{
+    background-color: red;
+}
