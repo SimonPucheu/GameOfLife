@@ -44,15 +44,18 @@ main {
     grid-template-rows: repeat(var(--rowsNumber), 1fr);
 }
 
-.box
-{
+.box {
     box-sizing: border-box;
     border: 1px solid black;
     width: 100%;
     height: 100%;
+    background-color: var(--boxColor);
 }
 
-.box.checked
-{
-    background-color: red;
+.box.checked {
+    background-color: var(--checkedBoxColor);
+}
+
+.hide {
+    display: none;
 }

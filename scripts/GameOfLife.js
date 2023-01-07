@@ -5,11 +5,15 @@ class GameOfLife {
         this.colsNumber = colsNumber;
         this.rowsNumber = rowsNumber;
         this.boxNumber = this.rowsNumber * this.colsNumber;
-        style.style.setProperty('--colsNumber', this.colsNumber);
-        style.style.setProperty('--rowsNumber', this.rowsNumber);
-        style.style.setProperty('--width', (100 * (this.colsNumber / this.rowsNumber)) + 'vh');
+        this.changeCSSVariable('boxColor', 'white');
+        this.changeCSSVariable('checkedBoxColor', 'red');
+        this.changeCSSVariable('colsNumber', this.colsNumber);
+        this.changeCSSVariable('rowsNumber', this.rowsNumber);
+        this.changeCSSVariable('width', (100 * (this.colsNumber / this.rowsNumber)) + 'vh');
         this.drawTable(this.wrapper, this.colsNumber, this.rowsNumber, this.table, true);
-
+    }
+    changeCSSVariable(key, value) {
+        this.style.style.setProperty('--' + key, value);
     }
     handleClick = (event) => {
         if (this.onSimulation) return;
@@ -21,53 +25,47 @@ class GameOfLife {
     }
     simulate = async (waitTime, period) => {
         this.onSimulation = true;
-        var simulationTable = this.table;
+        var simulationTable = this.table.map(subarray => { return subarray.slice(); });
         for (var i = 0; i < period; i++) {
             console.log('preiod:', i);
             simulationTable = this.applyRules(simulationTable, this.colsNumber, this.rowsNumber);
             this.drawTable(this.wrapper, this.colsNumber, this.rowsNumber, simulationTable);
             await new Promise(resolve => setTimeout(resolve, waitTime));
         }
-        this.drawTable(this.wrapper, this.colsNumber, this.rowsNumber, this.table);
+        // this.drawTable(this.wrapper, this.colsNumber, this.rowsNumber, this.table);
         this.onSimulation = false;
     }
-    applyRules(table, colsNumber, rowsNumber) {
-        console.log('table', table);
-        var result = table;
+    applyRules(original, colsNumber, rowsNumber) {
+        var result = original.map(subarray => { return subarray.slice(); });
         for (var y = 0; y < rowsNumber; y++) {
             for (var x = 0; x < colsNumber; x++) {
                 // Compute the number of neighbours
                 var line = {};
                 line.above =
-                    ((y - 1 >= 0 && x - 1 >= 0) ? table[y - 1][x - 1] : 0) +
-                    (y - 1 >= 0 ? table[y - 1][x] : 0) +
-                    ((y - 1 >= 0 && x + 1 < colsNumber) ? table[y - 1][x + 1] : 0);
+                    ((y - 1 >= 0 && x - 1 >= 0) ? original[y - 1][x - 1] : 0) +
+                    (y - 1 >= 0 ? original[y - 1][x] : 0) +
+                    ((y - 1 >= 0 && x + 1 < colsNumber) ? original[y - 1][x + 1] : 0);
                 line.below =
-                    ((y + 1 < rowsNumber && x - 1 >= 0) ? table[y + 1][x - 1] : 0) +
-                    (y + 1 < rowsNumber ? table[y + 1][x] : 0) +
-                    ((y + 1 < rowsNumber && x + 1 < colsNumber) ? table[y + 1][x + 1] : 0);
+                    ((y + 1 < rowsNumber && x - 1 >= 0) ? original[y + 1][x - 1] : 0) +
+                    (y + 1 < rowsNumber ? original[y + 1][x] : 0) +
+                    ((y + 1 < rowsNumber && x + 1 < colsNumber) ? original[y + 1][x + 1] : 0);
                 line.center =
-                    (x + 1 < colsNumber ? table[y][x + 1] : 0) +
-                    (x - 1 >= 0 ? table[y][x - 1] : 0);
+                    (x + 1 < colsNumber ? original[y][x + 1] : 0) +
+                    (x - 1 >= 0 ? original[y][x - 1] : 0);
                 var neighbours = line.center + line.above + line.below;
                 // Living cell
-                if (table[y][x]) {
-                    console.log('alive ceil in:', y, x);
-                    console.log('neighbours:', neighbours);
-                    console.log('above :', line.above);
-                    console.log('center:', line.center);
-                    console.log('below :', line.below);
+                if (original[y][x]) {
                     // Kill the cell
                     result[y][x] = false;
                     // Revive the cell if the number of neighbours is between 2 and 3
                     result[y][x] = (neighbours == 2 || neighbours == 3);
                 }
-                // Died cell
-                if (!table[y][x]) {
+                // Dead cell
+                if (!original[y][x]) {
                     // Kill the cell
                     result[y][x] = false;
                     // Revive the cell if the number of neighbours is between 2 and 3
-                    result[y][x] = neighbours == 3;
+                    result[y][x] = (neighbours == 3);
                 }
             }
         }

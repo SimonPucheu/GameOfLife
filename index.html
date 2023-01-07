@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,50 +14,49 @@
     <nav id="side">
         <h1>Game Of Life</h1>
         <p>
-            The rules and operations are detailed <a href="https://github.com/6moon9/GameOfLife">here</a>.
+            The rules and operations are detailed <a href="./README.md">here</a>.
         </p>
         <div id="inputs">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Property</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Line number</td>
-                        <td>
-                            <input type="number" id="lineNumber" min="1" value="10" max="10000" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Line color</td>
-                        <td>
-                            <input type="color" id="lineColor" value="#0000ff">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Line transparency</td>
-                        <td>
-                            <input type="number" id="lineTransparency" min="0.1" value="0.1" max="1" step="0.1">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Line width</td>
-                        <td>
-                            <input type="number" id="lineWidth" min="1" value="3" max="30">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Background color</td>
-                        <td>
-                            <input type="color" id="backgroundColor" value="#ffffff">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <input type="button" id="run" value="Run" />
+            <form method="dialog" id="form">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Iteration number</td>
+                            <td>
+                                <input form="form" type="number" name="iterationNumber" min="1" value="50" max="10000" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Wait time</td>
+                            <td>
+                                <input form="form" type="number" name="waitTime" min="1" value="50" max="10000" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Default box color</td>
+                            <td>
+                                <input form="form" type="color" name="boxColor" value="#ffffff" oninput="handleClick(this)">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Checked box color</td>
+                            <td>
+                                <input form="form" type="color" name="checkedBoxColor" value="#ff0000" oninput="handleClick(this)">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <input form="form" type="submit" id="run" value="Run" />
+                <input form="form" type="button" id="reset" value="Reset" class="hide" disabled />
+                <input form="form" type="button" id="exportConf" value="Export" />
+                <input form="form" type="file" id="importConf" value="Import" />
+            </form>
         </div>
     </nav>
     <main>
@@ -64,4 +64,5 @@
     </main>
     <script type="text/javascript" async defer src="scripts/script.js"></script>
 </body>
+
 </html>
